@@ -96,19 +96,102 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/slider-main */ "./src/js/modules/slider/slider-main.js");
-/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_slider_slider_mimi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/slider-mimi */ "./src/js/modules/slider/slider-mimi.js");
+/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_differens__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/differens */ "./src/js/modules/differens.js");
+
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
   const slider = new _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__["default"]({
-    page: '.page',
+    container: '.page',
     btns: '.next',
     slides: '.slider-1'
   });
   slider.render();
-  const player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play__circle', '.overlay');
+  const showUpSlider = new _modules_slider_slider_mimi__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.showup__content-slider',
+    next: '.showup__next',
+    prev: '.showup__prev',
+    slides: '.card'
+  });
+  showUpSlider.init();
+  const modulesSlider = new _modules_slider_slider_mimi__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.modules__content-slider',
+    next: 'modules__info-btns .slick-next',
+    prev: 'modules__info-btns .slick-prev',
+    slides: '.card'
+  });
+  modulesSlider.init();
+  const feedSlider = new _modules_slider_slider_mimi__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.feed__slider',
+    next: '.feed__slider .slick-next',
+    prev: '.feed__slider .slick-prev',
+    slides: '.card'
+  });
+  feedSlider.init();
+  const player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play__circle', '.overlay');
   player.init();
+  new _modules_differens__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/differens.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/differens.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Differens; });
+class Differens {
+  constructor(oldOfficer, newOfficer, items) {
+    this.oldOfficer = document.querySelector(oldOfficer);
+    this.newOfficer = document.querySelector(newOfficer);
+    this.oldItems = this.oldOfficer.querySelectorAll(items);
+    this.newItems = this.newOfficer.querySelectorAll(items);
+    this.oldCounter = 0;
+    this.newCounter = 0;
+  }
+
+  animated(item) {
+    item.forEach(item => item.classList.add('animated', 'fadeInDown'));
+  }
+
+  bindeTrigers(itemsOfiicer, itemsCount, itemsOld) {
+    itemsOfiicer.querySelector('.plus').addEventListener('click', () => {
+      if (itemsCount !== itemsOld.length - 2) {
+        itemsOld[itemsCount].style.display = 'flex';
+        itemsCount++;
+      } else {
+        itemsOld[itemsCount].style.display = 'flex';
+        itemsOld[itemsOld.length - 1].remove();
+      }
+    });
+  }
+
+  hideItems(items) {
+    items.forEach((item, i, arr) => {
+      if (i !== arr.length - 1) {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  init() {
+    this.hideItems(this.oldItems);
+    this.hideItems(this.newItems);
+    this.bindeTrigers(this.oldOfficer, this.oldCounter, this.oldItems);
+    this.bindeTrigers(this.newOfficer, this.newCounter, this.newItems);
+    this.animated(this.oldItems);
+    this.animated(this.newItems);
+  }
+
+}
 
 /***/ }),
 
@@ -184,8 +267,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
 
 class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(page, btns, slides) {
-    super(page, btns, slides);
+  constructor(container, btns, slides) {
+    super(container, btns, slides);
   }
 
   showSlides(n) {
@@ -245,6 +328,40 @@ class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
+/***/ "./src/js/modules/slider/slider-mimi.js":
+/*!**********************************************!*\
+  !*** ./src/js/modules/slider/slider-mimi.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MiniSlider; });
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
+
+class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(container, next, prev, slides) {
+    super(container, next, prev, slides);
+    this.offset = 0;
+  }
+
+  bindTriger() {}
+
+  init() {
+    this.container.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            align-items: flex-srart;
+        `;
+    this.bindTriger();
+  }
+
+}
+
+/***/ }),
+
 /***/ "./src/js/modules/slider/slider.js":
 /*!*****************************************!*\
   !*** ./src/js/modules/slider/slider.js ***!
@@ -257,15 +374,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Slider; });
 class Slider {
   constructor({
-    page = '',
-    btns = '',
-    slides = '',
-    next = '',
-    prev = ''
+    container = null,
+    btns = null,
+    slides = null,
+    next = null,
+    prev = null
   } = {}) {
-    this.page = document.querySelector(page);
-    this.slides = document.querySelectorAll(slides);
+    this.container = document.querySelector(container);
+    this.slides = this.container.querySelectorAll(slides);
     this.btns = document.querySelectorAll(btns);
+    this.prev = document.querySelector(prev);
+    this.next = document.querySelector(next);
     this.slideIndex = 1;
   }
 
